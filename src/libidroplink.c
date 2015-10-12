@@ -10,8 +10,8 @@
 unsigned int error_version = 1;
 
 struct curl_string {
-  char *p;
-  size_t len;
+    char *p;
+    size_t len;
 };
 
 void init_curl_string(struct curl_string *s)
@@ -60,9 +60,11 @@ char *get_id_for_email(char *api_endpoint, char *email, char *password, struct e
 {
     CURL *curl;
     char *url,
-         *opts;
+         *opts,
+         *out;
     CURLcode res;
 
+    out = NULL;
     curl = curl_easy_init();
 
     if (curl != NULL) {
@@ -83,14 +85,21 @@ char *get_id_for_email(char *api_endpoint, char *email, char *password, struct e
 
         if (s.p != NULL) {
             cJSON *root = cJSON_Parse(s.p);
-            return cJSON_GetObjectItem(root, "_id")->valuestring;
+
+            out = strdup(cJSON_GetObjectItem(root, "_id")->valuestring);
+            cJSON_Delete(root);
         }
+
+        free(s.p);
+        free(opts);
     }
 
     err->description = "Unable to prepare CURL";
     err->version = error_version;
 
-    return NULL;
+    curl_easy_cleanup(curl);
+
+    return out;
 }
 
 char *get_auth_token(char *api_endpoint, char *email, char *passwd, struct error *err)
@@ -115,9 +124,11 @@ char *get_auth_token_for_id(char *api_endpoint, char *id, char *email, char *pas
 {
     CURL *curl;
     char *url,
-         *opts;
+         *opts,
+         *out;
     CURLcode res;
 
+    out = NULL;
     curl = curl_easy_init();
 
     if (curl != NULL) {
@@ -138,12 +149,19 @@ char *get_auth_token_for_id(char *api_endpoint, char *id, char *email, char *pas
 
         if (s.p != NULL) {
             cJSON *root = cJSON_Parse(s.p);
-            return cJSON_GetObjectItem(root, "token")->valuestring;
+            out = strdup(cJSON_GetObjectItem(root, "token")->valuestring);
+            cJSON_Delete(root);
         }
+
+        free(opts);
+        free(s.p);
     }
 
     err->description = "Unable to prepare CURL";
     err->version = error_version;
-    return NULL;
+
+    curl_easy_cleanup(curl);
+
+    return out;
 }
 
