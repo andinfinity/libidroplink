@@ -24,6 +24,12 @@ struct error {
     char* description;
 };
 
+struct user {
+    char *_id;
+    char *email;
+    char *creation_date;
+};
+
 /**
  * --- META
  */
@@ -78,5 +84,18 @@ char *get_auth_token(char *api_endpoint, char *email, char *passwd, struct error
  * happens.
  */
 char *get_auth_token_for_id(char *api_endpoint, char *id, char *email, char *passwd, struct error *err);
+
+/**
+ * Get information about the user
+ *
+ * @param api_endpoint the URL to the API endpoint (full, for example `http://a.b/api/v1`).
+ * @param id the users id as returned by `get_id_for_email`.
+ * @param token access token that allows the client to request the resource
+ * @param err an allocated error struct that is being filled up if the function returns
+ * NULL due to a failure
+ *
+ * @returns user information
+ */
+struct user *get_user(char *api_endpoint, char *id, char *token, struct error *err);
 
 #endif
