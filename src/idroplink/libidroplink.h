@@ -53,25 +53,31 @@ int idl_is_compatible(void);
  */
 
 /**
- * Fetches the id for the given email and then retrieves an access token.
- *
- * @param email the users email
- * @param passwd the users password
- *
- * @return access token
- */
-char *get_id_for_email(char *api_endpoint, char *email, char *password, struct error *err);
-
-/**
  * Retrieves an authorization token for the given credentials.
  *
  * @param api_endpoint the URL to the API endpoint (full, for example `http://a.b/api/v1`).
  * @param email the users email
  * @param passwd the users password
- * @param err pointer to an error structure that gets written if something unexpected
- * happens.
+ * @param err an allocated error struct that is being filled up if the function returns
+ * NULL due to a failure
+ *
+ * @return auth token
  */
 char *get_auth_token(char *api_endpoint, char *email, char *passwd, struct error *err);
+
+/**
+ * Retrieves an authorization token for the given credentials.
+ *
+ * @param api_endpoint the URL to the API endpoint (full, for example `http://a.b/api/v1`).
+ * @param id the users internal id that is mandatory for the API url
+ * @param email the users email
+ * @param passwd the users password
+ * @param err an allocated error struct that is being filled up if the function returns
+ * NULL due to a failure
+ *
+ * @return auth token
+ */
+char *get_auth_token_for_id(char *api_endpoint, char *id, char *email, char *passwd, struct error *err);
 
 /**
  * Retrieves an authorization token for the given credentials.
@@ -83,7 +89,23 @@ char *get_auth_token(char *api_endpoint, char *email, char *passwd, struct error
  * @param err pointer to an error structure that gets written if something unexpected
  * happens.
  */
-char *get_auth_token_for_id(char *api_endpoint, char *id, char *email, char *passwd, struct error *err);
+
+/**
+ * User
+ */
+
+/**
+ * Fetches the id for the given email and then retrieves an access token.
+ *
+ * @param api_endpoint the URL to the API endpoint (full, for example `http://a.b/api/v1`).
+ * @param email the users email
+ * @param passwd the users password
+ * @param err an allocated error struct that is being filled up if the function returns
+ * NULL due to a failure
+ *
+ * @return user id
+ */
+char *get_id_for_email(char *api_endpoint, char *email, char *password, struct error *err);
 
 /**
  * Get information about the user

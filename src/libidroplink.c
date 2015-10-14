@@ -56,52 +56,12 @@ size_t _write_curl_result_string( void *p, size_t size, size_t nmemb, struct cur
     return size*nmemb;
 }
 
-char *get_id_for_email(char *api_endpoint, char *email, char *password, struct error *err)
-{
-    CURL *curl;
-    char *url,
-         *opts,
-         *out;
-    CURLcode res;
-
-    out = NULL;
-    curl = curl_easy_init();
-
-    if (curl != NULL) {
-        struct curl_string s;
-        init_curl_string(&s);
-
-        opts = malloc((strlen(email) + strlen(password) + 16 + 1) * sizeof(char));
-        sprintf(opts, "email=%s&password=%s", email, password);
-
-        url = join_url(api_endpoint, "/users", email, "/idformail", NULL);
-        curl_easy_setopt(curl, CURLOPT_URL, url);
-        curl_easy_setopt(curl, CURLOPT_POST, url);
-        curl_easy_setopt(curl, CURLOPT_POSTFIELDS, opts);
-        curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, _write_curl_result_string);
-        curl_easy_setopt(curl, CURLOPT_WRITEDATA, &s);
-
-        res = curl_easy_perform(curl);
-
-        if (s.p != NULL) {
-            cJSON *root = cJSON_Parse(s.p);
-
-            out = strdup(cJSON_GetObjectItem(root, "_id")->valuestring);
-            cJSON_Delete(root);
-        }
-
-        free(s.p);
-        free(opts);
-    }
-
-    err->description = "Unable to prepare CURL";
-    err->version = error_version;
-
-    curl_easy_cleanup(curl);
-
-    return out;
-}
-
+/**
+ * Interface Implementations
+ */
+/**
+ * Authentication
+ */
 char *get_auth_token(char *api_endpoint, char *email, char *passwd, struct error *err)
 {
     char *id,
@@ -123,10 +83,10 @@ char *get_auth_token(char *api_endpoint, char *email, char *passwd, struct error
 char *get_auth_token_for_id(char *api_endpoint, char *id, char *email, char *passwd, struct error *err)
 {
     CURL *curl;
+    CURLcode res;
     char *url,
          *opts,
          *out;
-    CURLcode res;
 
     out = NULL;
     curl = curl_easy_init();
@@ -136,6 +96,11 @@ char *get_auth_token_for_id(char *api_endpoint, char *id, char *email, char *pas
         init_curl_string(&s);
 
         opts = malloc((strlen(email) + strlen(passwd) + 16 + 1) * sizeof(char));
+        if (opts == NULL) {
+            fprintf(stderr, "malloc() failed\n");
+            exit(EXIT_FAILURE);
+        }
+
         sprintf(opts, "email=%s&password=%s", email, passwd);
 
         url = join_url(api_endpoint, "/users", id, "/authenticate", NULL);
@@ -155,10 +120,70 @@ char *get_auth_token_for_id(char *api_endpoint, char *id, char *email, char *pas
 
         free(opts);
         free(s.p);
+    } else {
+        err->description = "Unable to prepare CURL";
+        err->version = error_version;
     }
 
-    err->description = "Unable to prepare CURL";
-    err->version = error_version;
+    curl_easy_cleanup(curl);
+
+    return out;
+}
+
+int deauthenticate(char *api_endpoint, char *id, char *token, struct error *err)
+{
+
+    return 0;
+}
+
+/**
+ * User
+ */
+char *get_id_for_email(char *api_endpoint, char *email, char *password, struct error *err)
+{
+    CURL *curl;
+    CURLcode res;
+    char *url,
+         *opts,
+         *out;
+
+    out = NULL;
+    curl = curl_easy_init();
+
+    if (curl != NULL) {
+        struct curl_string s;
+        init_curl_string(&s);
+
+        opts = malloc((strlen(email) + strlen(password) + 16 + 1) * sizeof(char));
+        if (opts == NULL) {
+            fprintf(stderr, "malloc() failed\n");
+            exit(EXIT_FAILURE);
+        }
+
+        sprintf(opts, "email=%s&password=%s", email, password);
+
+        url = join_url(api_endpoint, "/users", email, "/idformail", NULL);
+        curl_easy_setopt(curl, CURLOPT_URL, url);
+        curl_easy_setopt(curl, CURLOPT_POST, url);
+        curl_easy_setopt(curl, CURLOPT_POSTFIELDS, opts);
+        curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, _write_curl_result_string);
+        curl_easy_setopt(curl, CURLOPT_WRITEDATA, &s);
+
+        res = curl_easy_perform(curl);
+
+        if (s.p != NULL) {
+            cJSON *root = cJSON_Parse(s.p);
+
+            out = strdup(cJSON_GetObjectItem(root, "_id")->valuestring);
+            cJSON_Delete(root);
+        }
+
+        free(s.p);
+        free(opts);
+    } else {
+        err->description = "Unable to prepare CURL";
+        err->version = error_version;
+    }
 
     curl_easy_cleanup(curl);
 
