@@ -42,3 +42,6 @@ depcomp
 missing
 *.a
 Makefile
+.deps
+.dirstamp
+*.cache
