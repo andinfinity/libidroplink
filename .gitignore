@@ -30,3 +30,14 @@
 
 # Debug files
 *.dSYM/
+
+# automake
+aclocal.m4
+compile
+install-sh
+config.status
+config.log
+configure
+depcomp
+missing
+*.a
