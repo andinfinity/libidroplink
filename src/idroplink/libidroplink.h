@@ -120,4 +120,17 @@ char *get_id_for_email(char *api_endpoint, char *email, char *password, struct e
  */
 struct user *get_user(char *api_endpoint, char *id, char *token, struct error *err);
 
+
+/**
+ * Creates a user
+ *
+ * @param api_endpoint the URL to the API endpoint (full, for example `http://a.b/api/v1`).
+ * @param email the users email
+ * @param passwd the users password
+ * @param err an allocated error struct that is being filled up if the function returns
+ * NULL due to a failure
+ *
+ * @returns the users id (NULL if unsuccessful)
+ */
+char *create_user(char *api_endpoint, char *email, char *passwd, struct error *err);
 #endif

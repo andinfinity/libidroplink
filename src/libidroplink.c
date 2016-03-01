@@ -288,3 +288,82 @@ struct user *get_user(char *api_endpoint, char *id, char *token, struct error *e
     return usr;
 }
 
+
+char *create_user(char *api_endpoint, char *email, char *passwd, struct error *err)
+{
+    CURL *curl;
+    CURLcode res;
+    char *url,
+         *opts,
+         *out;
+
+    out = NULL;
+
+    curl = curl_easy_init();
+
+    if (curl != NULL) {
+        char *user_agent;
+        struct curl_string s;
+        struct curl_slist *chunk = NULL;
+
+        init_curl_string(&s);
+
+        /* Build custom header list for `Authorization` and `UserAgent`. */
+        opts = malloc((strlen(email) + strlen(passwd + 16 + 1)) * sizeof(char));
+        if (opts == NULL) {
+            fprintf(stderr, "malloc() failed\n");
+            exit(EXIT_FAILURE);
+        }
+
+        sprintf(opts, "email=%s&password=%s", email, passwd);
+
+        user_agent = malloc(sizeof(char *) * (26 + 1));
+        if (user_agent == NULL) {
+            fprintf(stderr, "malloc() failed\n");
+            exit(EXIT_FAILURE);
+        }
+
+        sprintf(user_agent, "User-Agent: libidroplink/%d", IDL_VERSION);
+        chunk = curl_slist_append(chunk, user_agent);
+
+        url = join_url(api_endpoint, "/users", NULL);
+        curl_easy_setopt(curl, CURLOPT_URL, url);
+        curl_easy_setopt(curl, CURLOPT_HTTPHEADER, chunk);
+        curl_easy_setopt(curl, CURLOPT_POSTFIELDS, opts);
+        curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, _write_curl_result_string);
+        curl_easy_setopt(curl, CURLOPT_WRITEDATA, &s);
+
+        res = curl_easy_perform(curl);
+        curl_slist_free_all(chunk);
+
+        if (s.p != NULL) {
+            cJSON *root = cJSON_Parse(s.p);
+
+            if (cJSON_GetObjectItem(root, "_id") != NULL) {
+                out = strdup(cJSON_GetObjectItem(root, "_id")->valuestring);
+            }
+
+            if (out == NULL ) {
+                if (cJSON_GetObjectItem(root, "message") != NULL) {
+                    err->description = strdup(cJSON_GetObjectItem(root, "message")->valuestring);
+                    err->version = error_version;
+                } else {
+                    err->description = "Unexpected answer from remote";
+                    err->version = error_version;
+                }
+            }
+
+            cJSON_Delete(root);
+        }
+
+        free(s.p);
+        free(opts);
+    } else {
+        err->description = "Unable to prepare CURL";
+        err->version = error_version;
+    }
+
+    curl_easy_cleanup(curl);
+
+    return out;
+}
