@@ -35,7 +35,7 @@ char *join_url(char *comp, ...)
             comp++;
         }
 
-        /* be sure to have a slash as the latest char */
+        /* be sure to have a slash as the last char */
         if (comp[strlen(comp) - 1] != '/') {
             /* no need to free the old comp space because this are arguments anyways */
             temp = malloc((strlen(comp) + 2) * sizeof(char));
