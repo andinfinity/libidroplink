@@ -151,8 +151,19 @@ char *get_id_for_email(char *api_endpoint, char *email, char *password, struct e
     curl = curl_easy_init();
 
     if (curl != NULL) {
+        char *user_agent;
         struct curl_string s;
+        struct curl_slist *chunk = NULL;
         init_curl_string(&s);
+
+        user_agent = malloc(sizeof(char *) * (26 + 1));
+        if (user_agent == NULL) {
+            fprintf(stderr, "malloc() failed\n");
+            exit(EXIT_FAILURE);
+        }
+
+        sprintf(user_agent, "User-Agent: libidroplink/%d", IDL_VERSION);
+        chunk = curl_slist_append(chunk, user_agent);
 
         opts = malloc((strlen(email) + strlen(password) + 16 + 1) * sizeof(char));
         if (opts == NULL) {
@@ -166,6 +177,7 @@ char *get_id_for_email(char *api_endpoint, char *email, char *password, struct e
         curl_easy_setopt(curl, CURLOPT_URL, url);
         curl_easy_setopt(curl, CURLOPT_POST, url);
         curl_easy_setopt(curl, CURLOPT_POSTFIELDS, opts);
+        curl_easy_setopt(curl, CURLOPT_HTTPHEADER, chunk);
         curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, _write_curl_result_string);
         curl_easy_setopt(curl, CURLOPT_WRITEDATA, &s);
 
