@@ -88,15 +88,18 @@ char *get_auth_token(char *api_endpoint, char *email, char *passwd, struct error
 char *get_auth_token_for_id(char *api_endpoint, char *id, char *email, char *passwd, struct error *err);
 
 /**
- * Retrieves an authorization token for the given credentials.
+ * Revokes the previously issued auth token
  *
  * @param api_endpoint the URL to the API endpoint (full, for example `http://a.b/api/v1`).
- * @param id the users internal id that is mandatory for the API url
  * @param email the users email
  * @param passwd the users password
- * @param err pointer to an error structure that gets written if something unexpected
- * happens.
+ * @param err an allocated error struct that is being filled up if the function returns
+ * NULL due to a failure
+ *
+ * @return If successfull, 1 gets returned. If not, something unexpected happened. See
+ * err for details.
  */
+int deauthenticate(char *api_endpoint, char *id, char *token, struct error *err);
 
 /**
  * User

@@ -24,4 +24,4 @@ make install
     - [ ] Delete User (`DELETE /users/:id`)
     - [x] Get User ID by email (`GET /users/:email/idformail`)
     - [x] Create Token for a User (`POST /users/:id/authenticate`)
-    - [ ] Log out (`POST /users/:id/deauthenticate`)
+    - [x] Log out (`POST /users/:id/deauthenticate`)
