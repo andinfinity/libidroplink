@@ -311,7 +311,7 @@ struct user *get_user(char *api_endpoint, char *id, char *token, struct error *e
             cJSON *root = cJSON_Parse(s.p);
 
             if (cJSON_GetObjectItem(root, "_id") != NULL) {
-                usr->_id = cJSON_GetObjectItem(root, "_id")->valuestring;
+                usr->_id = strdup(cJSON_GetObjectItem(root, "_id")->valuestring);
             } else {
                 usr->_id = NULL;
             }
