@@ -149,6 +149,7 @@ char *get_auth_token_for_id(char *api_endpoint, char *id, char *email, char *pas
     if (curl != NULL) {
         struct curl_string s;
         init_curl_string(&s);
+        long http_code = 0;
 
         opts = malloc((strlen(email) + strlen(passwd) + 16 + 1) * sizeof(char));
         if (opts == NULL) {
@@ -168,8 +169,15 @@ char *get_auth_token_for_id(char *api_endpoint, char *id, char *email, char *pas
         res = curl_easy_perform(curl);
 
         if (s.p != NULL) {
+            curl_easy_getinfo(curl, CURLINFO_RESPONSE_CODE, &http_code);
             cJSON *root = cJSON_Parse(s.p);
-            out = strdup(cJSON_GetObjectItem(root, "token")->valuestring);
+
+            if (cJSON_GetObjectItem(root, "token")) {
+                out = strdup(cJSON_GetObjectItem(root, "token")->valuestring);
+            } else {
+                out = NULL;
+            }
+
             cJSON_Delete(root);
         }
 
