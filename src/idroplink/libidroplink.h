@@ -8,6 +8,8 @@
 #ifndef _LIBIDROPLINK_H_
 #define _LIBIDROPLINK_H_
 
+#define API_COMPAT_VERSION "v1"
+
 #define IDL_VERSION_MAJOR 0
 #define IDL_VERSION_MINOR 1
 #define IDL_VERSION ((IDL_VERSION_MAJOR << 16) | IDL_VERSION_MINOR)
@@ -47,6 +49,12 @@ unsigned int get_library_version(void);
  * @returns if test was successful or not
  */
 int idl_is_compatible(void);
+
+
+/**
+ * -- API
+ */
+int check_api_vs(char* base, struct error *err);
 
 /**
  * --- Auth

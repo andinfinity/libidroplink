@@ -59,6 +59,61 @@ size_t _write_curl_result_string( void *p, size_t size, size_t nmemb, struct cur
 /**
  * Interface Implementations
  */
+int check_api_vs(char* base, struct error *err)
+{
+    CURL *curl;
+    CURLcode res;
+    char *url;
+    int out;
+
+    out = 0;
+    curl = curl_easy_init();
+
+    if (curl != NULL) {
+        char *user_agent;
+        struct curl_slist *chunk = NULL;
+        struct curl_string s;
+        init_curl_string(&s);
+        long http_code = 0;
+
+        user_agent = malloc(sizeof(char *) * (26 + 1));
+        if (user_agent == NULL) {
+            fprintf(stderr, "malloc() failed\n");
+            exit(EXIT_FAILURE);
+        }
+
+        sprintf(user_agent, "User-Agent: libidroplink/%d", IDL_VERSION);
+        chunk = curl_slist_append(chunk, user_agent);
+
+        curl_easy_setopt(curl, CURLOPT_URL, base);
+        curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, _write_curl_result_string);
+        curl_easy_setopt(curl, CURLOPT_WRITEDATA, &s);
+
+        res = curl_easy_perform(curl);
+
+        if (s.p != NULL) {
+            curl_easy_getinfo(curl, CURLINFO_RESPONSE_CODE, &http_code);
+
+            if (http_code == 200) {
+                out = 1;
+            } else {
+                out = 0;
+            }
+        } else {
+            err->description = "Unexpected answer from remote.";
+            err->version = error_version;
+        }
+
+        free(s.p);
+    } else {
+        err->description = "Unable to prepare CURL";
+        err->version = error_version;
+    }
+
+    curl_easy_cleanup(curl);
+
+    return out;
+}
 /**
  * Authentication
  */
