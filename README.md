@@ -10,6 +10,9 @@ make install
 
 ## API Implementation Progress
 ### API v1
+* `API`
+    - [x] Check for version compatibility (`GET /api/v1` for first version)
+
 * `DROP`
     - [ ] Initialize drop transaction (`POST /users/:userId/drops`)
     - [ ] Upload file to initialized drop (`POST /users/:id/drops/:id`)
