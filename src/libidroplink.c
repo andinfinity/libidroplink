@@ -504,78 +504,82 @@ struct user *get_user(char *api_endpoint, char *id, char *token, struct error *e
 char *create_user(char *api_endpoint, char *email, char *passwd, struct error *err)
 {
     CURL *curl;
-    CURLcode res;
-    char *url,
-         *opts,
-         *out;
+    char *out;
+    long http_code = 0;
 
     out = NULL;
-
     curl = curl_easy_init();
 
     if (curl != NULL) {
-        char *user_agent;
+        char *post_fields,
+             *url,
+             *user_agent_header;
+        CURLcode res;
         struct curl_string s;
-        struct curl_slist *chunk = NULL;
+        struct curl_slist *header_chunk = NULL;
 
         init_curl_string(&s);
 
-        /* Build custom header list for `Authorization` and `UserAgent`. */
-        opts = malloc((strlen(email) + strlen(passwd + 16 + 1)) * sizeof(char));
-        if (opts == NULL) {
+        /* User agent header */
+        user_agent_header = malloc(sizeof(char *) * (26 + 1));
+        if (user_agent_header == NULL) {
             fprintf(stderr, "malloc() failed\n");
             exit(EXIT_FAILURE);
         }
+        sprintf(user_agent_header, "User-Agent: libidroplink/%d", IDL_VERSION);
 
-        sprintf(opts, "email=%s&password=%s", email, passwd);
+        header_chunk = curl_slist_append(header_chunk, user_agent_header);
 
-        user_agent = malloc(sizeof(char *) * (26 + 1));
-        if (user_agent == NULL) {
+        /* POST fields */
+        post_fields = malloc((strlen(email) + strlen(passwd + 16 + 1)) * sizeof(char));
+        if (post_fields == NULL) {
             fprintf(stderr, "malloc() failed\n");
             exit(EXIT_FAILURE);
         }
-
-        sprintf(user_agent, "User-Agent: libidroplink/%d", IDL_VERSION);
-        chunk = curl_slist_append(chunk, user_agent);
+        sprintf(post_fields, "email=%s&password=%s", email, passwd);
 
         url = join_url(api_endpoint, "/users", NULL);
         curl_easy_setopt(curl, CURLOPT_URL, url);
-        curl_easy_setopt(curl, CURLOPT_HTTPHEADER, chunk);
-        curl_easy_setopt(curl, CURLOPT_POSTFIELDS, opts);
+        curl_easy_setopt(curl, CURLOPT_HTTPHEADER, header_chunk);
+        curl_easy_setopt(curl, CURLOPT_POSTFIELDS, post_fields);
         curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, _write_curl_result_string);
         curl_easy_setopt(curl, CURLOPT_WRITEDATA, &s);
 
         res = curl_easy_perform(curl);
-        curl_slist_free_all(chunk);
+        curl_slist_free_all(header_chunk);
+        free(post_fields);
+        free(url);
+        free(user_agent_header);
 
         if (s.p != NULL) {
             cJSON *root = cJSON_Parse(s.p);
 
-            if (cJSON_GetObjectItem(root, "_id") != NULL) {
-                out = strdup(cJSON_GetObjectItem(root, "_id")->valuestring);
-            }
+            curl_easy_getinfo(curl, CURLINFO_RESPONSE_CODE, &http_code);
 
-            if (out == NULL ) {
+            if (http_code == 201 && cJSON_GetObjectItem(root, "_id") != NULL) {
+                out = strdup(cJSON_GetObjectItem(root, "_id")->valuestring);
+            } else {
                 if (cJSON_GetObjectItem(root, "message") != NULL) {
                     err->description = strdup(cJSON_GetObjectItem(root, "message")->valuestring);
                     err->version = error_version;
+                    err->http_code = http_code;
                 } else {
                     err->description = "Unexpected answer from remote";
                     err->version = error_version;
+                    err->http_code = http_code;
                 }
             }
 
+            free(s.p);
             cJSON_Delete(root);
         }
 
-        free(s.p);
-        free(opts);
+        curl_easy_cleanup(curl);
     } else {
         err->description = "Unable to prepare CURL";
         err->version = error_version;
+        err->http_code = http_code;
     }
-
-    curl_easy_cleanup(curl);
 
     return out;
 }
