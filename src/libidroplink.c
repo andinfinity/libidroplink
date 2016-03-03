@@ -62,34 +62,39 @@ size_t _write_curl_result_string( void *p, size_t size, size_t nmemb, struct cur
 int check_api_vs(char* base, struct error *err)
 {
     CURL *curl;
-    CURLcode res;
-    char *url;
     int out;
+    long http_code = 0;
 
     out = 0;
     curl = curl_easy_init();
 
     if (curl != NULL) {
-        char *user_agent;
-        struct curl_slist *chunk = NULL;
+        char *user_agent_header,
+             *url;
+        CURLcode res;
+        struct curl_slist *header_chunk = NULL;
         struct curl_string s;
-        init_curl_string(&s);
-        long http_code = 0;
 
-        user_agent = malloc(sizeof(char *) * (26 + 1));
-        if (user_agent == NULL) {
+        init_curl_string(&s);
+
+        /* User agent header */
+        user_agent_header = malloc(sizeof(char *) * (26 + 1));
+        if (user_agent_header == NULL) {
             fprintf(stderr, "malloc() failed\n");
             exit(EXIT_FAILURE);
         }
+        sprintf(user_agent_header, "User-Agent: libidroplink/%d", IDL_VERSION);
 
-        sprintf(user_agent, "User-Agent: libidroplink/%d", IDL_VERSION);
-        chunk = curl_slist_append(chunk, user_agent);
+        header_chunk = curl_slist_append(header_chunk, user_agent_header);
 
         curl_easy_setopt(curl, CURLOPT_URL, base);
+        curl_easy_setopt(curl, CURLOPT_HTTPHEADER, header_chunk);
         curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, _write_curl_result_string);
         curl_easy_setopt(curl, CURLOPT_WRITEDATA, &s);
 
         res = curl_easy_perform(curl);
+        curl_slist_free_all(header_chunk);
+        free(user_agent_header);
 
         if (s.p != NULL) {
             curl_easy_getinfo(curl, CURLINFO_RESPONSE_CODE, &http_code);
@@ -98,19 +103,25 @@ int check_api_vs(char* base, struct error *err)
                 out = 1;
             } else {
                 out = 0;
+
+                err->description = "Unexpected answer from remote.";
+                err->version = error_version;
+                err->http_code = http_code;
             }
+
+            free(s.p);
         } else {
             err->description = "Unexpected answer from remote.";
             err->version = error_version;
+            err->http_code = http_code;
         }
 
-        free(s.p);
+        curl_easy_cleanup(curl);
     } else {
         err->description = "Unable to prepare CURL";
         err->version = error_version;
+        err->http_code = http_code;
     }
-
-    curl_easy_cleanup(curl);
 
     return out;
 }
