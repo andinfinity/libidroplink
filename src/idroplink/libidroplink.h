@@ -22,8 +22,12 @@
  * `description` further describes the issue if possible.
  */
 struct error {
+    /* internal error versioning to avoid errors on changing attributes over time */
     int version;
+    /* description as provided by the remote API or alternatively a rough problem description */
     char* description;
+    /* http status code if available, otherwise defaults to 0 if failed */
+    long http_code;
 };
 
 struct user {
