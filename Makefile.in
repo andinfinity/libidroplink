@@ -781,7 +781,7 @@ uninstall-am: uninstall-libLIBRARIES
 
 
 test:
-	gcc -lCURL -lm src/vendor/cJSON.c src/utils.c  src/libidroplink.c  tests/minunit.h tests/libidroplink_tests.c && ./a.out && rm a.out
+	gcc -lCURL -lm src/vendor/cJSON.c src/utils.c src/libidroplink.c tests/minunit.h tests/libidroplink_tests.c && ./a.out && rm a.out
 
 .PHONY: test
 
