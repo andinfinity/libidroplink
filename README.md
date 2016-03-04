@@ -8,6 +8,13 @@ make
 make install
 ```
 
+## Development
+Unit tests are available for development environments:
+```
+./configure
+make test
+```
+
 ## API Implementation Progress
 ### API v1
 * `API`
