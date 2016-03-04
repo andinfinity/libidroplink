@@ -66,6 +66,10 @@ int check_api_vs(char* base, struct error *err)
     long http_code = 0;
 
     out = 0;
+
+    if (base == NULL)
+        return out;
+
     curl = curl_easy_init();
 
     if (curl != NULL) {
@@ -96,7 +100,7 @@ int check_api_vs(char* base, struct error *err)
         curl_slist_free_all(header_chunk);
         free(user_agent_header);
 
-        if (s.p != NULL) {
+        if (s.p != NULL && strlen(s.p) > 0) {
             curl_easy_getinfo(curl, CURLINFO_RESPONSE_CODE, &http_code);
 
             if (http_code == 200) {
@@ -133,6 +137,9 @@ char *get_auth_token(char *api_endpoint, char *email, char *passwd, struct error
     char *id,
          *token;
 
+    if (api_endpoint == NULL || email == NULL || passwd == NULL)
+        return NULL;
+
     id = get_id_for_email(api_endpoint, email, passwd, err);
 
     if (id == NULL) {
@@ -153,6 +160,10 @@ char *get_auth_token_for_id(char *api_endpoint, char *id, char *email, char *pas
     long http_code = 0;
 
     out = NULL;
+
+    if (api_endpoint == NULL || id == NULL || email == NULL || passwd == NULL)
+        return out;
+
     curl = curl_easy_init();
 
     if (curl != NULL) {
@@ -196,7 +207,7 @@ char *get_auth_token_for_id(char *api_endpoint, char *id, char *email, char *pas
         free(url);
         free(user_agent_header);
 
-        if (s.p != NULL) {
+        if (s.p != NULL && strlen(s.p) > 0) {
             cJSON *root = cJSON_Parse(s.p);
 
             curl_easy_getinfo(curl, CURLINFO_RESPONSE_CODE, &http_code);
@@ -233,6 +244,9 @@ int deauthenticate(char *api_endpoint, char *id, char *token, struct error *err)
 {
     CURL *curl;
     long http_code = 0;
+
+    if (api_endpoint == NULL || id == NULL || token == NULL)
+        return 0;
 
     curl = curl_easy_init();
 
@@ -280,7 +294,7 @@ int deauthenticate(char *api_endpoint, char *id, char *token, struct error *err)
         free(url);
         free(user_agent_header);
 
-        if (s.p != NULL) {
+        if (s.p != NULL && strlen(s.p) > 0) {
             cJSON *root = cJSON_Parse(s.p);
 
             curl_easy_getinfo(curl, CURLINFO_RESPONSE_CODE, &http_code);
@@ -321,6 +335,10 @@ char *get_id_for_email(char *api_endpoint, char *email, char *password, struct e
     long http_code = 0;
 
     out = NULL;
+
+    if (api_endpoint == NULL || email == NULL || password == NULL)
+        return out;
+
     curl = curl_easy_init();
 
     if (curl != NULL) {
@@ -365,7 +383,7 @@ char *get_id_for_email(char *api_endpoint, char *email, char *password, struct e
         free(url);
         free(user_agent_header);
 
-        if (s.p != NULL) {
+        if (s.p != NULL && strlen(s.p) > 0) {
             cJSON *root = cJSON_Parse(s.p);
 
             curl_easy_getinfo(curl, CURLINFO_RESPONSE_CODE, &http_code);
@@ -401,6 +419,10 @@ char *create_user(char *api_endpoint, char *email, char *passwd, struct error *e
     long http_code = 0;
 
     out = NULL;
+
+    if (api_endpoint == NULL || email == NULL || passwd == NULL)
+        return NULL;
+
     curl = curl_easy_init();
 
     if (curl != NULL) {
@@ -444,7 +466,7 @@ char *create_user(char *api_endpoint, char *email, char *passwd, struct error *e
         free(url);
         free(user_agent_header);
 
-        if (s.p != NULL) {
+        if (s.p != NULL && strlen(s.p) > 0) {
             cJSON *root = cJSON_Parse(s.p);
 
             curl_easy_getinfo(curl, CURLINFO_RESPONSE_CODE, &http_code);
@@ -481,7 +503,12 @@ struct user *get_user(char *api_endpoint, char *id, char *token, struct error *e
 {
     CURL *curl;
     long http_code = 0;
-    struct user *usr = malloc(sizeof(struct user));
+    struct user *usr;
+
+    if (api_endpoint == NULL || id == NULL || token == NULL)
+        return NULL;
+
+    usr = malloc(sizeof(struct user));
 
     if (usr == NULL) {
         fprintf(stderr, "malloc() failed\n");
@@ -532,7 +559,7 @@ struct user *get_user(char *api_endpoint, char *id, char *token, struct error *e
         free(url);
         free(user_agent_header);
 
-        if (s.p != NULL) {
+        if (s.p != NULL && strlen(s.p) > 0) {
             cJSON *root = cJSON_Parse(s.p);
 
             curl_easy_getinfo(curl, CURLINFO_RESPONSE_CODE, &http_code);
@@ -589,6 +616,9 @@ int delete_user(char *api_endpoint, char *id, char *token, struct error *err)
     CURL *curl;
     long http_code = 0;
 
+    if (api_endpoint == NULL || id == NULL || token == NULL)
+        return 0;
+
     curl = curl_easy_init();
 
     if (curl != NULL) {
@@ -633,7 +663,7 @@ int delete_user(char *api_endpoint, char *id, char *token, struct error *err)
         free(url);
         free(user_agent_header);
 
-        if (s.p != NULL) {
+        if (s.p != NULL && strlen(s.p) > 0) {
             cJSON *root = cJSON_Parse(s.p);
 
             curl_easy_getinfo(curl, CURLINFO_RESPONSE_CODE, &http_code);
