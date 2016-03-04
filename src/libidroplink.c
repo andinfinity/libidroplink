@@ -611,12 +611,12 @@ struct user *get_user(char *api_endpoint, char *id, char *token, struct error *e
 }
 
 
-int delete_user(char *api_endpoint, char *id, char *token, struct error *err)
+int delete_user(char *api_endpoint, char *user_id, char *token, struct error *err)
 {
     CURL *curl;
     long http_code = 0;
 
-    if (api_endpoint == NULL || id == NULL || token == NULL)
+    if (api_endpoint == NULL || user_id == NULL || token == NULL)
         return 0;
 
     curl = curl_easy_init();
@@ -650,7 +650,7 @@ int delete_user(char *api_endpoint, char *id, char *token, struct error *err)
 
         header_chunk = curl_slist_append(header_chunk, user_agent_header);
 
-        url = join_url(api_endpoint, "/users", id, NULL);
+        url = join_url(api_endpoint, "/users", user_id, NULL);
         curl_easy_setopt(curl, CURLOPT_URL, url);
         curl_easy_setopt(curl, CURLOPT_HTTPHEADER, header_chunk);
         curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, _write_curl_result_string);

@@ -147,7 +147,7 @@ struct user *get_user(char *api_endpoint, char *id, char *token, struct error *e
  * @return If successfull, 1 gets returned. If not, something unexpected happened. See
  * err for details.
  */
-int delete_user(char *api_endpoint, char *id, char *token, struct error *err);
+int delete_user(char *api_endpoint, char *user_id, char *token, struct error *err);
 
 /**
  * Creates a user
