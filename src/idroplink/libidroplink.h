@@ -89,7 +89,8 @@ char *get_auth_token(char *api_endpoint, char *email, char *passwd, struct error
  *
  * @return auth token
  */
-char *get_auth_token_for_id(char *api_endpoint, char *id, char *email, char *passwd, struct error *err);
+char *get_auth_token_for_id(char *api_endpoint, char *user_id, char *email, char *passwd,
+        struct error *err);
 
 /**
  * Revokes the previously issued auth token
@@ -103,7 +104,7 @@ char *get_auth_token_for_id(char *api_endpoint, char *id, char *email, char *pas
  * @return If successfull, 1 gets returned. If not, something unexpected happened. See
  * err for details.
  */
-int deauthenticate(char *api_endpoint, char *id, char *token, struct error *err);
+int deauthenticate(char *api_endpoint, char *user_id, char *token, struct error *err);
 
 /**
  * User
@@ -123,6 +124,19 @@ int deauthenticate(char *api_endpoint, char *id, char *token, struct error *err)
 char *get_id_for_email(char *api_endpoint, char *email, char *password, struct error *err);
 
 /**
+ * Creates a user
+ *
+ * @param api_endpoint the URL to the API endpoint (full, for example `http://a.b/api/v1`).
+ * @param email the users email
+ * @param passwd the users password
+ * @param err an allocated error struct that is being filled up if the function returns
+ * NULL due to a failure
+ *
+ * @returns the users id (NULL if unsuccessful)
+ */
+char *create_user(char *api_endpoint, char *email, char *passwd, struct error *err);
+
+/**
  * Get information about the user
  *
  * @param api_endpoint the URL to the API endpoint (full, for example `http://a.b/api/v1`).
@@ -133,7 +147,7 @@ char *get_id_for_email(char *api_endpoint, char *email, char *password, struct e
  *
  * @returns user information
  */
-struct user *get_user(char *api_endpoint, char *id, char *token, struct error *err);
+struct user *get_user(char *api_endpoint, char *user_id, char *token, struct error *err);
 
 /**
  * Deletes a user entry.
@@ -149,16 +163,4 @@ struct user *get_user(char *api_endpoint, char *id, char *token, struct error *e
  */
 int delete_user(char *api_endpoint, char *user_id, char *token, struct error *err);
 
-/**
- * Creates a user
- *
- * @param api_endpoint the URL to the API endpoint (full, for example `http://a.b/api/v1`).
- * @param email the users email
- * @param passwd the users password
- * @param err an allocated error struct that is being filled up if the function returns
- * NULL due to a failure
- *
- * @returns the users id (NULL if unsuccessful)
- */
-char *create_user(char *api_endpoint, char *email, char *passwd, struct error *err);
 #endif

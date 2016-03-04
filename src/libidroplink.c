@@ -153,7 +153,7 @@ char *get_auth_token(char *api_endpoint, char *email, char *passwd, struct error
     return token;
 }
 
-char *get_auth_token_for_id(char *api_endpoint, char *id, char *email, char *passwd, struct error *err)
+char *get_auth_token_for_id(char *api_endpoint, char *user_id, char *email, char *passwd, struct error *err)
 {
     CURL *curl;
     char *out;
@@ -161,7 +161,7 @@ char *get_auth_token_for_id(char *api_endpoint, char *id, char *email, char *pas
 
     out = NULL;
 
-    if (api_endpoint == NULL || id == NULL || email == NULL || passwd == NULL)
+    if (api_endpoint == NULL || user_id == NULL || email == NULL || passwd == NULL)
         return out;
 
     curl = curl_easy_init();
@@ -193,7 +193,7 @@ char *get_auth_token_for_id(char *api_endpoint, char *id, char *email, char *pas
 
         header_chunk = curl_slist_append(header_chunk, user_agent_header);
 
-        url = join_url(api_endpoint, "/users", id, "/authenticate", NULL);
+        url = join_url(api_endpoint, "/users", user_id, "/authenticate", NULL);
         curl_easy_setopt(curl, CURLOPT_URL, url);
         curl_easy_setopt(curl, CURLOPT_POST, url);
         curl_easy_setopt(curl, CURLOPT_POSTFIELDS, post_fields);
@@ -240,12 +240,12 @@ char *get_auth_token_for_id(char *api_endpoint, char *id, char *email, char *pas
     return out;
 }
 
-int deauthenticate(char *api_endpoint, char *id, char *token, struct error *err)
+int deauthenticate(char *api_endpoint, char *user_id, char *token, struct error *err)
 {
     CURL *curl;
     long http_code = 0;
 
-    if (api_endpoint == NULL || id == NULL || token == NULL)
+    if (api_endpoint == NULL || user_id == NULL || token == NULL)
         return 0;
 
     curl = curl_easy_init();
@@ -280,7 +280,7 @@ int deauthenticate(char *api_endpoint, char *id, char *token, struct error *err)
 
         header_chunk = curl_slist_append(header_chunk, user_agent_header);
 
-        url = join_url(api_endpoint, "/users", id, "/deauthenticate", NULL);
+        url = join_url(api_endpoint, "/users", user_id, "/deauthenticate", NULL);
         curl_easy_setopt(curl, CURLOPT_URL, url);
         curl_easy_setopt(curl, CURLOPT_POST, url);
         curl_easy_setopt(curl, CURLOPT_POSTFIELDS, "");
@@ -499,13 +499,13 @@ char *create_user(char *api_endpoint, char *email, char *passwd, struct error *e
     return out;
 }
 
-struct user *get_user(char *api_endpoint, char *id, char *token, struct error *err)
+struct user *get_user(char *api_endpoint, char *user_id, char *token, struct error *err)
 {
     CURL *curl;
     long http_code = 0;
     struct user *usr;
 
-    if (api_endpoint == NULL || id == NULL || token == NULL)
+    if (api_endpoint == NULL || user_id == NULL || token == NULL)
         return NULL;
 
     usr = malloc(sizeof(struct user));
@@ -547,7 +547,7 @@ struct user *get_user(char *api_endpoint, char *id, char *token, struct error *e
 
         header_chunk = curl_slist_append(header_chunk, user_agent_header);
 
-        url = join_url(api_endpoint, "/users", id, NULL);
+        url = join_url(api_endpoint, "/users", user_id, NULL);
         curl_easy_setopt(curl, CURLOPT_URL, url);
         curl_easy_setopt(curl, CURLOPT_HTTPHEADER, header_chunk);
         curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, _write_curl_result_string);
