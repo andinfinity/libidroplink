@@ -135,6 +135,19 @@ char *get_id_for_email(char *api_endpoint, char *email, char *password, struct e
  */
 struct user *get_user(char *api_endpoint, char *id, char *token, struct error *err);
 
+/**
+ * Deletes a user entry.
+ *
+ * @param api_endpoint the URL to the API endpoint (full, for example `http://a.b/api/v1`).
+ * @param id the users id as returned by `get_id_for_email`.
+ * @param token access token that allows the client to request the resource
+ * @param err an allocated error struct that is being filled up if the function returns
+ * NULL due to a failure
+ *
+ * @return If successfull, 1 gets returned. If not, something unexpected happened. See
+ * err for details.
+ */
+int delete_user(char *api_endpoint, char *id, char *token, struct error *err);
 
 /**
  * Creates a user

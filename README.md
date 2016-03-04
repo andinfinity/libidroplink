@@ -24,7 +24,7 @@ make install
     - [x] Create User (`POST /users`)
     - [x] Lookup User (`GET /users/:id`)
     - [ ] Update User (`PUT /users/:id`)
-    - [ ] Delete User (`DELETE /users/:id`)
+    - [x] Delete User (`DELETE /users/:id`)
     - [x] Get User ID by email (`GET /users/:email/idformail`)
     - [x] Create Token for a User (`POST /users/:id/authenticate`)
     - [x] Log out (`POST /users/:id/deauthenticate`)
