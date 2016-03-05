@@ -16,7 +16,11 @@ struct user *usr;
 
 
 void test_setup() {
-    base = "http://localhost:7667/api/v1";
+    base = getenv("IDL_API_ENDPOINT");
+
+    if (base == NULL)
+        base = "http://localhost:7667/api/v1";
+
     TEST_USER = "foo@bar.de";
     NEW_USER_NAME = "bar@baz.de";
     TEST_PASS = "test";
