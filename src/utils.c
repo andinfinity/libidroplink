@@ -1,7 +1,7 @@
 #include <stdarg.h>
 #include <stdlib.h>
 #include <stdio.h>
-#include <strings.h>
+#include <string.h>
 #include <assert.h>
 
 char *join_url(char *comp, ...)
