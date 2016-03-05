@@ -1,1 +1,3 @@
 language: c
+script:
+    autoreconf -iv && ./configure && make && make test
