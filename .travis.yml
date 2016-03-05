@@ -1,3 +1,8 @@
 language: c
+
+before_install:
+    - sudo apt-get update -qq
+    - sudo apt-get install -qq libcurl4-openssl-dev
+
 script:
     autoreconf -iv && ./configure && make && make test
