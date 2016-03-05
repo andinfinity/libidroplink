@@ -693,4 +693,3 @@ int delete_user(char *api_endpoint, char *user_id, char *token, struct error *er
 
     return http_code == 200;
 }
-}
