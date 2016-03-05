@@ -33,7 +33,6 @@
 
 # automake
 compile
-install-sh
 config.status
 config.log
 depcomp
