@@ -9,10 +9,19 @@ make install
 ```
 
 ## Development
+To build the build tools invoke the following command:
+```
+autoreconf -iv
+```
+
+To clean all generated files which should not end up in the repo invoke this command:
+```
+git clean -f -d -x
+```
+
 Unit tests are available for development environments:
 ```
-./configure
-make test
+./configure && make test
 ```
 
 ## API Implementation Progress
