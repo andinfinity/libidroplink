@@ -1,4 +1,4 @@
-# libidroplink
+# libidroplink ![travis status](https://travis-ci.org/idrop-link/libidroplink.svg?branch=master)
 C implementation of our API
 
 ## Installation
