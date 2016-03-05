@@ -32,13 +32,23 @@
 *.dSYM/
 
 # automake
-compile
-config.status
-config.log
-depcomp
-missing
-*.a
+# /autom4te.cache/
+/config/
 Makefile
-.deps
-.dirstamp
-*.cache
+Makefile.in
+aclocal.m4
+app.info
+compile
+config.h
+config.h.in
+config.log
+config.status
+configure
+configure.scan
+coverage_report
+depcomp
+install-sh
+libtool
+m4
+missing
+stamp-h1
