@@ -73,8 +73,8 @@ MU_TEST(fetch_user) {
     usr = get_user(base, user_id, token, &err);
 
     mu_assert(usr != NULL, "Should have returned a user struct");
-    mu_assert(usr->_id == user_id, "Should have the same id as requested");
-    mu_assert(usr->email == TEST_USER, "Should have the same mail as it was created with");
+    mu_assert(strcmp(usr->_id, user_id) == 0, "Should have the same id as requested");
+    mu_assert(strcmp(usr->email, TEST_USER) == 0, "Should have the same mail as it was created with");
 }
 
 MU_TEST(change_user) {
