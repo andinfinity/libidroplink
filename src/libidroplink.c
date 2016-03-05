@@ -1,5 +1,5 @@
 #include <stdlib.h>
-#include <strings.h>
+#include <string.h>
 
 #include <curl/curl.h>
 #include "vendor/cJSON.h"
