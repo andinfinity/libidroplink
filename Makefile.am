@@ -8,6 +8,6 @@ libs:="libcurl librt"
 endif
 
 test:
-	gcc `pkg-config --libs --cflags $(libs)` -lm $(libidroplink_a_SOURCES) tests/minunit.h tests/libidroplink_tests.c && ./a.out && rm a.out
+	gcc `pkg-config --libs --cflags libcurl` -lm -lrt $(libidroplink_a_SOURCES) tests/minunit.h tests/libidroplink_tests.c && ./a.out && rm a.out
 
 .PHONY: test
