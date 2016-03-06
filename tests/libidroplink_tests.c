@@ -50,8 +50,13 @@ MU_TEST(fetch_id_for_mail) {
     _id = get_id_for_email(base, TEST_USER, TEST_PASS, &err);
 
     mu_assert(_id != NULL, "Should have returned id");
-    mu_assert(strcmp(_id, user_id) == 0,
-            "Should have returned same id as returned while creating user");
+
+    /* no need to fail here because if so we already have an
+     * error from the respective test
+     */
+    if (_id != NULL && user_id != NULL)
+        mu_assert(strcmp(_id, user_id) == 0,
+                "Should have returned same id as returned while creating user");
 
     if (_id != NULL)
         free(_id);
@@ -73,8 +78,14 @@ MU_TEST(fetch_user) {
     usr = get_user(base, user_id, token, &err);
 
     mu_assert(usr != NULL, "Should have returned a user struct");
-    mu_assert(strcmp(usr->_id, user_id) == 0, "Should have the same id as requested");
-    mu_assert(strcmp(usr->email, TEST_USER) == 0, "Should have the same mail as it was created with");
+
+    if (usr != NULL && usr->_id != NULL && user_id != NULL)
+        mu_assert(strcmp(usr->_id, user_id) == 0,
+                "Should have the same id as requested");
+
+    if (usr != NULL && usr->email != NULL && TEST_USER != NULL)
+        mu_assert(strcmp(usr->email, TEST_USER) == 0,
+                "Should have the same mail as it was created with");
 }
 
 MU_TEST(change_user) {
@@ -100,9 +111,10 @@ MU_TEST(remove_user) {
     mu_assert(succ == 0, "Should have not removed the user with an invalid token");
 
     token = get_auth_token_for_id(base, user_id, TEST_USER, TEST_PASS, &err);
+    mu_assert(token != NULL, "Should have returned another token");
+
     succ = delete_user(base, user_id, token, &err);
 
-    mu_assert(token != NULL, "Should have returned another token");
     mu_assert(succ, "Should have removed the user");
 }
 
