@@ -1,8 +1,24 @@
 language: c
 
+env:
+    global:
+        # The next declaration is the encrypted COVERITY_SCAN_TOKEN, created
+        #   via the "travis encrypt" command using the project repo's public key
+        - secure: "XdRo+/FTD+ORTL6FQiBj8mV8XeXHT2x0qGUZOWxSIxV/ft5vPYiSkQDEfBy7sxsyOCW8hvED7q0rYtdFEqxIZJpLr/cBcCl73+85xskp5OTgs1bJmxJyGEsCOCIA1U2pXXEeG8FL9gZWs6ksJiftterBIYku/0bLkn0RDtGZSfDnG2L2opV4I2ZlPvR8SOIobd/qVQF2A+CUBujNs2qoeTFczdM6jRj2x8gkfwa+uxSakAoVgDSTZHaw2gjOsAmNVekQNVrlf/McXXQmvuMjpE3zx6uq9wl6CBVl0kuQmcGZKGU8DuHHK7fKgqlqZmWOLUQXbE2AiZqGaFzA1RsGBXUyqTE7dbEoVypA0Y0vKVdkPC/RYsrr284yjRsUoW/zATs1iqFOXA7yUr2gG766tRZUOk2kZZV0YbDF22Pcw1x5nhYISWPmIT4baY3b2GtHyGSDG8NxeinGYskmAWu3oIBZ9SDe4lV0cfDPVw8aGH0tgr1DDDeGVr2fx0NxQr5d2RksKyUorunqhTjObNKIkZZbcaZIqz8oS9o25EA8h+Vzs+CIyVuPefesG8qSdfEHb8Jd1q1kNsg1bzkzRRDEdtkYedX5F4+rFgL/Cl8L+4gN3RWjGUwECc7rqf41ZH8H0T8O17y1KeYm9mi+phr5unJYh6v9/m/xuJVp0/Hfkz4="
+
 before_install:
     - sudo apt-get update -qq
     - sudo apt-get install -qq libcurl4-openssl-dev
+
+addons:
+    coverity_scan:
+        project:
+            name: "idrop-link/libidroplink"
+            description: "Build submitted via Travis CI"
+        notification_email: christian.schulze@mni.thm.de
+        build_command_prepend: "./configure; make clean"
+        build_command:   "make -j 4"
+        branch_pattern: coverity_scan
 
 script:
     autoreconf -iv && ./configure && make && make test
