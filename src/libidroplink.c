@@ -73,8 +73,7 @@ int check_api_vs(char* base, struct error *err)
     curl = curl_easy_init();
 
     if (curl != NULL) {
-        char *user_agent_header,
-             *url;
+        char *user_agent_header;
         CURLcode res;
         struct curl_slist *header_chunk = NULL;
         struct curl_string s;
