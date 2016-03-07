@@ -66,84 +66,84 @@ MU_TEST(url_joining) {
 
     mu_assert(strcmp(in1, "http://localhost:7667/api/v1/user/") == 0,
             "Should have concatenated the user url for in 1 correctly");
-    mu_assert(strlen(in1) == test_1_len, "Strings should match in lengh for in1");
+    mu_assert(strlen(in1) == test_1_len, "Strings should match in length for in1");
 
     mu_assert(strcmp(in2, "http://localhost:7667/api/v1/user/") == 0,
             "Should have concatenated the user url for in2 correctly");
-    mu_assert(strlen(in2) == test_1_len, "Strings should match in lengh for in2");
+    mu_assert(strlen(in2) == test_1_len, "Strings should match in length for in2");
 
     mu_assert(strcmp(in3, "http://localhost:7667/api/v1/user/") == 0,
             "Should have concatenated the user url for in3 correctly");
-    mu_assert(strlen(in3) == test_1_len, "Strings should match in lengh for in3");
+    mu_assert(strlen(in3) == test_1_len, "Strings should match in length for in3");
 
     mu_assert(strcmp(in4, "http://localhost:7667/api/v1/user/") == 0,
             "Should have concatenated the user url for in4 correctly");
-    mu_assert(strlen(in4) == test_1_len, "Strings should match in lengh for in4");
+    mu_assert(strlen(in4) == test_1_len, "Strings should match in length for in4");
 
 
     mu_assert(strcmp(in5, "http://localhost:7667/api/v1/user/thisisafakeid/") == 0,
             "Should have concatenated the user url for in5 correctly");
-    mu_assert(strlen(in5) == test_2_len, "Strings should match in lengh for in5");
+    mu_assert(strlen(in5) == test_2_len, "Strings should match in length for in5");
 
     mu_assert(strcmp(in6, "http://localhost:7667/api/v1/user/thisisafakeid/") == 0,
             "Should have concatenated the user url for in6 correctly");
-    mu_assert(strlen(in6) == test_2_len, "Strings should match in lengh for in6");
+    mu_assert(strlen(in6) == test_2_len, "Strings should match in length for in6");
 
     mu_assert(strcmp(in7, "http://localhost:7667/api/v1/user/thisisafakeid/") == 0,
             "Should have concatenated the user url for in7 correctly");
-    mu_assert(strlen(in7) == test_2_len, "Strings should match in lengh for in7");
+    mu_assert(strlen(in7) == test_2_len, "Strings should match in length for in7");
 
     mu_assert(strcmp(in8, "http://localhost:7667/api/v1/user/thisisafakeid/") == 0,
             "Should have concatenated the user url for in8 correctly");
-    mu_assert(strlen(in8) == test_2_len, "Strings should match in lengh for in8");
+    mu_assert(strlen(in8) == test_2_len, "Strings should match in length for in8");
 
     mu_assert(strcmp(in9, "http://localhost:7667/api/v1/user/thisisafakeid/") == 0,
             "Should have concatenated the user url for in9 correctly");
-    mu_assert(strlen(in9) == test_2_len, "Strings should match in lengh for in9");
+    mu_assert(strlen(in9) == test_2_len, "Strings should match in length for in9");
 
     mu_assert(strcmp(in10, "http://localhost:7667/api/v1/user/thisisafakeid/") == 0,
             "Should have concatenated the user url for in10 correctly");
-    mu_assert(strlen(in10) == test_2_len, "Strings should match in lengh for in10");
+    mu_assert(strlen(in10) == test_2_len, "Strings should match in length for in10");
 
     mu_assert(strcmp(in11, "http://localhost:7667/api/v1/user/thisisafakeid/") == 0,
             "Should have concatenated the user url for in11 correctly");
-    mu_assert(strlen(in11) == test_2_len, "Strings should match in lengh for in11");
+    mu_assert(strlen(in11) == test_2_len, "Strings should match in length for in11");
 
     mu_assert(strcmp(in12, "http://localhost:7667/api/v1/user/thisisafakeid/") == 0,
             "Should have concatenated the user url for in12 correctly");
-    mu_assert(strlen(in12) == test_2_len, "Strings should match in lengh for in12");
+    mu_assert(strlen(in12) == test_2_len, "Strings should match in length for in12");
 
     mu_assert(strcmp(in13, "http://localhost:7667/api/v1/user/thisisafakeid/") == 0,
             "Should have concatenated the user url for in13 correctly");
-    mu_assert(strlen(in13) == test_2_len, "Strings should match in lengh for in13");
+    mu_assert(strlen(in13) == test_2_len, "Strings should match in length for in13");
 
     mu_assert(strcmp(in14, "http://localhost:7667/api/v1/user/thisisafakeid/") == 0,
             "Should have concatenated the user url for in14 correctly");
-    mu_assert(strlen(in14) == test_2_len, "Strings should match in lengh for in14");
+    mu_assert(strlen(in14) == test_2_len, "Strings should match in length for in14");
 
     mu_assert(strcmp(in15, "http://localhost:7667/api/v1/user/thisisafakeid/") == 0,
             "Should have concatenated the user url for in15 correctly");
-    mu_assert(strlen(in15) == test_2_len, "Strings should match in lengh for in15");
+    mu_assert(strlen(in15) == test_2_len, "Strings should match in length for in15");
 
     mu_assert(strcmp(in16, "http://localhost:7667/api/v1/user/thisisafakeid/") == 0,
             "Should have concatenated the user url for in16 correctly");
-    mu_assert(strlen(in16) == test_2_len, "Strings should match in lengh for in16");
+    mu_assert(strlen(in16) == test_2_len, "Strings should match in length for in16");
 
     mu_assert(strcmp(in17, "http://localhost:7667/api/v1/user/thisisafakeid/") == 0,
             "Should have concatenated the user url for in17 correctly");
-    mu_assert(strlen(in17) == test_2_len, "Strings should match in lengh for in17");
+    mu_assert(strlen(in17) == test_2_len, "Strings should match in length for in17");
 
     mu_assert(strcmp(in18, "http://localhost:7667/api/v1/user/thisisafakeid/") == 0,
             "Should have concatenated the user url for in18 correctly");
-    mu_assert(strlen(in18) == test_2_len, "Strings should match in lengh for in18");
+    mu_assert(strlen(in18) == test_2_len, "Strings should match in length for in18");
 
     mu_assert(strcmp(in19, "http://localhost:7667/api/v1/user/thisisafakeid/") == 0,
             "Should have concatenated the user url for in19 correctly");
-    mu_assert(strlen(in19) == test_2_len, "Strings should match in lengh for in19");
+    mu_assert(strlen(in19) == test_2_len, "Strings should match in length for in19");
 
     mu_assert(strcmp(in20, "http://localhost:7667/api/v1/user/thisisafakeid/") == 0,
             "Should have concatenated the user url for in20 correctly");
-    mu_assert(strlen(in20) == test_2_len, "Strings should match in lengh for in20");
+    mu_assert(strlen(in20) == test_2_len, "Strings should match in length for in20");
 
     mu_assert(strcmp(in21, "http://localhost:7667/api/v1/user/thisisafakeid/someaction/") == 0,
             "Should have concatenated the user url for in21 correctly");
