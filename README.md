@@ -8,8 +8,11 @@ command:
 sudo apt-get install libcurl4-openssl-dev autoreconf
 ```
 
-You don't have to do anything if you are on OS X. (You might have to get Xcode and
-the developer tools prior to building though.)
+You don't have to do anything for curl if you are on OS X. (You might have to get Xcode and
+the developer tools prior to building though.) For automake you could install it via `brew`:
+```
+brew install autoreconf
+```
 
 ## Installation
 ```
