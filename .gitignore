@@ -53,3 +53,9 @@ libtool
 m4
 missing
 stamp-h1
+.dirstamp
+
+% IntelliJ project files
+.idea
+CMakeLists.txt
+
