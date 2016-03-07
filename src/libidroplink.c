@@ -39,8 +39,9 @@ int idl_is_compatible(void)
     return major == IDL_VERSION_MAJOR;
 }
 
-size_t _write_curl_result_string( void *p, size_t size, size_t nmemb, struct curl_string *s)
+size_t _write_curl_result_string(void *p, size_t size, size_t nmemb, void *s_)
 {
+    struct curl_string *s = s_;
     size_t new_len = s->len + (size * nmemb);
     s->p = realloc(s->p, new_len+1);
 
