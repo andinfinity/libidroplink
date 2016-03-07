@@ -8,11 +8,11 @@
 
 struct error err;
 char *token,
-     *user_id,
-     *base,
-     *TEST_USER,
-     *TEST_PASS,
-     *NEW_USER_NAME;
+        *user_id,
+        *base,
+        *TEST_USER,
+        *TEST_PASS,
+        *NEW_USER_NAME;
 struct user *usr;
 
 
@@ -32,121 +32,87 @@ void test_teardown() {
 
 MU_TEST(url_joining) {
     /* test cases */
-    char *in1 = join_url(base, "/user/", NULL);
-    char *in2 = join_url(base, "user", NULL);
-    char *in3 = join_url(base, "user/", NULL);
-    char *in4 = join_url(base, "/user", NULL);
+    char *actual[] = {
+            join_url(base, "/user/", NULL),
+            join_url(base, "user", NULL),
+            join_url(base, "user/", NULL),
+            join_url(base, "/user", NULL),
 
-    char *in5 = join_url(base, "/user/", "/thisisafakeid/", NULL);
-    char *in6 = join_url(base, "user", "/thisisafakeid/", NULL);
-    char *in7 = join_url(base, "user/", "/thisisafakeid/", NULL);
-    char *in8 = join_url(base, "/user", "/thisisafakeid/", NULL);
+            join_url(base, "/user/", "/thisisafakeid/", NULL),
+            join_url(base, "user", "/thisisafakeid/", NULL),
+            join_url(base, "user/", "/thisisafakeid/", NULL),
+            join_url(base, "/user", "/thisisafakeid/", NULL),
 
-    char *in9 = join_url(base, "/user/", "thisisafakeid", NULL);
-    char *in10 = join_url(base, "user", "thisisafakeid", NULL);
-    char *in11 = join_url(base, "user/", "thisisafakeid", NULL);
-    char *in12 = join_url(base, "/user", "thisisafakeid", NULL);
+            join_url(base, "/user/", "thisisafakeid", NULL),
+            join_url(base, "user", "thisisafakeid", NULL),
+            join_url(base, "user/", "thisisafakeid", NULL),
+            join_url(base, "/user", "thisisafakeid", NULL),
 
-    char *in13 = join_url(base, "/user/", "thisisafakeid/", NULL);
-    char *in14 = join_url(base, "user", "thisisafakeid/", NULL);
-    char *in15 = join_url(base, "user/", "thisisafakeid/", NULL);
-    char *in16 = join_url(base, "/user", "thisisafakeid/", NULL);
+            join_url(base, "/user/", "thisisafakeid/", NULL),
+            join_url(base, "user", "thisisafakeid/", NULL),
+            join_url(base, "user/", "thisisafakeid/", NULL),
+            join_url(base, "/user", "thisisafakeid/", NULL),
 
-    char *in17 = join_url(base, "/user/", "/thisisafakeid", NULL);
-    char *in18 = join_url(base, "user", "/thisisafakeid", NULL);
-    char *in19 = join_url(base, "user/", "/thisisafakeid", NULL);
-    char *in20 = join_url(base, "/user", "/thisisafakeid", NULL);
+            join_url(base, "/user/", "/thisisafakeid", NULL),
+            join_url(base, "user", "/thisisafakeid", NULL),
+            join_url(base, "user/", "/thisisafakeid", NULL),
+            join_url(base, "/user", "/thisisafakeid", NULL),
 
-    /* note that we won't test this more thoroughly like the case with three components
-     * above as this would take *a lot* of test cases to do it exhaustive */
-    char *in21 = join_url(base, "/user", "thisisafakeid", "someaction", NULL);
+            /* note that we won't test this more thoroughly like the case with three components
+             * above as this would take *a lot* of test cases to do it exhaustive */
+            join_url(base, "/user", "thisisafakeid", "someaction", NULL)
+    };
 
-    size_t test_1_len = strlen("http://localhost:7667/api/v1/user/");
-    size_t test_2_len = strlen("http://localhost:7667/api/v1/user/thisisafakeid/");
+    const char *expected[] = {
+            "http://localhost:7667/api/v1/user/",
+            "http://localhost:7667/api/v1/user/",
+            "http://localhost:7667/api/v1/user/",
+            "http://localhost:7667/api/v1/user/",
 
-    mu_assert(strcmp(in1, "http://localhost:7667/api/v1/user/") == 0,
-            "Should have concatenated the user url for in 1 correctly");
-    mu_assert(strlen(in1) == test_1_len, "Strings should match in length for in1");
+            "http://localhost:7667/api/v1/user/thisisafakeid/",
+            "http://localhost:7667/api/v1/user/thisisafakeid/",
+            "http://localhost:7667/api/v1/user/thisisafakeid/",
+            "http://localhost:7667/api/v1/user/thisisafakeid/",
 
-    mu_assert(strcmp(in2, "http://localhost:7667/api/v1/user/") == 0,
-            "Should have concatenated the user url for in2 correctly");
-    mu_assert(strlen(in2) == test_1_len, "Strings should match in length for in2");
+            "http://localhost:7667/api/v1/user/thisisafakeid/",
+            "http://localhost:7667/api/v1/user/thisisafakeid/",
+            "http://localhost:7667/api/v1/user/thisisafakeid/",
+            "http://localhost:7667/api/v1/user/thisisafakeid/",
 
-    mu_assert(strcmp(in3, "http://localhost:7667/api/v1/user/") == 0,
-            "Should have concatenated the user url for in3 correctly");
-    mu_assert(strlen(in3) == test_1_len, "Strings should match in length for in3");
+            "http://localhost:7667/api/v1/user/thisisafakeid/",
+            "http://localhost:7667/api/v1/user/thisisafakeid/",
+            "http://localhost:7667/api/v1/user/thisisafakeid/",
+            "http://localhost:7667/api/v1/user/thisisafakeid/",
 
-    mu_assert(strcmp(in4, "http://localhost:7667/api/v1/user/") == 0,
-            "Should have concatenated the user url for in4 correctly");
-    mu_assert(strlen(in4) == test_1_len, "Strings should match in length for in4");
+            "http://localhost:7667/api/v1/user/thisisafakeid/",
+            "http://localhost:7667/api/v1/user/thisisafakeid/",
+            "http://localhost:7667/api/v1/user/thisisafakeid/",
+            "http://localhost:7667/api/v1/user/thisisafakeid/",
 
+            "http://localhost:7667/api/v1/user/thisisafakeid/someaction/"
+    };
 
-    mu_assert(strcmp(in5, "http://localhost:7667/api/v1/user/thisisafakeid/") == 0,
-            "Should have concatenated the user url for in5 correctly");
-    mu_assert(strlen(in5) == test_2_len, "Strings should match in length for in5");
+    int i;
+    char *error_message;
 
-    mu_assert(strcmp(in6, "http://localhost:7667/api/v1/user/thisisafakeid/") == 0,
-            "Should have concatenated the user url for in6 correctly");
-    mu_assert(strlen(in6) == test_2_len, "Strings should match in length for in6");
+    /* should we replace this with an actual assert? */
+    mu_assert(sizeof(actual) == sizeof(expected), "Both arrays with actual and expected strings must match in "
+            "length");
 
-    mu_assert(strcmp(in7, "http://localhost:7667/api/v1/user/thisisafakeid/") == 0,
-            "Should have concatenated the user url for in7 correctly");
-    mu_assert(strlen(in7) == test_2_len, "Strings should match in length for in7");
+    for (i = 0; i < sizeof(actual) / sizeof(char *); ++i) {
+        /* compare actual and expected strings */
+        asprintf(&error_message, "Should have concatenated the user url for test string %d correctly. Result is %s, "
+                "but expected %s.", i, actual[i], expected[i]);
+        mu_assert(strcmp(actual[i], expected[i]) == 0, error_message);
+        free(error_message);
 
-    mu_assert(strcmp(in8, "http://localhost:7667/api/v1/user/thisisafakeid/") == 0,
-            "Should have concatenated the user url for in8 correctly");
-    mu_assert(strlen(in8) == test_2_len, "Strings should match in length for in8");
+        /* compare length of actual and expected strings */
+        asprintf(&error_message, "Strings should match in length for test string %d", i);
+        mu_assert(strlen(actual[i]) == strlen(expected[i]), error_message);
+        free(error_message);
 
-    mu_assert(strcmp(in9, "http://localhost:7667/api/v1/user/thisisafakeid/") == 0,
-            "Should have concatenated the user url for in9 correctly");
-    mu_assert(strlen(in9) == test_2_len, "Strings should match in length for in9");
-
-    mu_assert(strcmp(in10, "http://localhost:7667/api/v1/user/thisisafakeid/") == 0,
-            "Should have concatenated the user url for in10 correctly");
-    mu_assert(strlen(in10) == test_2_len, "Strings should match in length for in10");
-
-    mu_assert(strcmp(in11, "http://localhost:7667/api/v1/user/thisisafakeid/") == 0,
-            "Should have concatenated the user url for in11 correctly");
-    mu_assert(strlen(in11) == test_2_len, "Strings should match in length for in11");
-
-    mu_assert(strcmp(in12, "http://localhost:7667/api/v1/user/thisisafakeid/") == 0,
-            "Should have concatenated the user url for in12 correctly");
-    mu_assert(strlen(in12) == test_2_len, "Strings should match in length for in12");
-
-    mu_assert(strcmp(in13, "http://localhost:7667/api/v1/user/thisisafakeid/") == 0,
-            "Should have concatenated the user url for in13 correctly");
-    mu_assert(strlen(in13) == test_2_len, "Strings should match in length for in13");
-
-    mu_assert(strcmp(in14, "http://localhost:7667/api/v1/user/thisisafakeid/") == 0,
-            "Should have concatenated the user url for in14 correctly");
-    mu_assert(strlen(in14) == test_2_len, "Strings should match in length for in14");
-
-    mu_assert(strcmp(in15, "http://localhost:7667/api/v1/user/thisisafakeid/") == 0,
-            "Should have concatenated the user url for in15 correctly");
-    mu_assert(strlen(in15) == test_2_len, "Strings should match in length for in15");
-
-    mu_assert(strcmp(in16, "http://localhost:7667/api/v1/user/thisisafakeid/") == 0,
-            "Should have concatenated the user url for in16 correctly");
-    mu_assert(strlen(in16) == test_2_len, "Strings should match in length for in16");
-
-    mu_assert(strcmp(in17, "http://localhost:7667/api/v1/user/thisisafakeid/") == 0,
-            "Should have concatenated the user url for in17 correctly");
-    mu_assert(strlen(in17) == test_2_len, "Strings should match in length for in17");
-
-    mu_assert(strcmp(in18, "http://localhost:7667/api/v1/user/thisisafakeid/") == 0,
-            "Should have concatenated the user url for in18 correctly");
-    mu_assert(strlen(in18) == test_2_len, "Strings should match in length for in18");
-
-    mu_assert(strcmp(in19, "http://localhost:7667/api/v1/user/thisisafakeid/") == 0,
-            "Should have concatenated the user url for in19 correctly");
-    mu_assert(strlen(in19) == test_2_len, "Strings should match in length for in19");
-
-    mu_assert(strcmp(in20, "http://localhost:7667/api/v1/user/thisisafakeid/") == 0,
-            "Should have concatenated the user url for in20 correctly");
-    mu_assert(strlen(in20) == test_2_len, "Strings should match in length for in20");
-
-    mu_assert(strcmp(in21, "http://localhost:7667/api/v1/user/thisisafakeid/someaction/") == 0,
-            "Should have concatenated the user url for in21 correctly");
+        free(actual[i]);
+    }
 }
 
 MU_TEST(check_api) {
@@ -165,7 +131,7 @@ MU_TEST(fetch_id_for_mail) {
     char *_id;
 
     mu_assert(get_id_for_email(NULL, NULL, NULL, &err) == NULL,
-            "Should have returned NULL");
+              "Should have returned NULL");
 
     _id = get_id_for_email(base, TEST_USER, TEST_PASS, &err);
 
@@ -176,7 +142,7 @@ MU_TEST(fetch_id_for_mail) {
      */
     if (_id != NULL && user_id != NULL)
         mu_assert(strcmp(_id, user_id) == 0,
-                "Should have returned same id as returned while creating user");
+                  "Should have returned same id as returned while creating user");
 
     if (_id != NULL)
         free(_id);
@@ -184,7 +150,7 @@ MU_TEST(fetch_id_for_mail) {
 
 MU_TEST(get_token) {
     mu_assert(get_auth_token_for_id(NULL, NULL, NULL, NULL, &err) == NULL,
-            "Should have returned NULL");
+              "Should have returned NULL");
 
     token = get_auth_token_for_id(base, user_id, TEST_USER, TEST_PASS, &err);
 
@@ -201,11 +167,11 @@ MU_TEST(fetch_user) {
 
     if (usr != NULL && usr->_id != NULL && user_id != NULL)
         mu_assert(strcmp(usr->_id, user_id) == 0,
-                "Should have the same id as requested");
+                  "Should have the same id as requested");
 
     if (usr != NULL && usr->email != NULL && TEST_USER != NULL)
         mu_assert(strcmp(usr->email, TEST_USER) == 0,
-                "Should have the same mail as it was created with");
+                  "Should have the same mail as it was created with");
 }
 
 MU_TEST(change_user) {
@@ -240,7 +206,7 @@ MU_TEST(remove_user) {
 
 
 MU_TEST_SUITE(test_suite) {
-	MU_SUITE_CONFIGURE(&test_setup, &test_teardown);
+    MU_SUITE_CONFIGURE(&test_setup, &test_teardown);
 
     MU_RUN_TEST(url_joining);
     MU_RUN_TEST(check_api);
@@ -254,7 +220,7 @@ MU_TEST_SUITE(test_suite) {
 }
 
 int main(int argc, char *argv[]) {
-	MU_RUN_SUITE(test_suite);
-	MU_REPORT();
-	return 0;
+    MU_RUN_SUITE(test_suite);
+    MU_REPORT();
+    return 0;
 }
