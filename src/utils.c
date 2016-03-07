@@ -22,6 +22,7 @@ char *join_url(char *comp, ...)
     while(comp != NULL)
     {
         /* resize array */
+		/* +1 for '\0' */
         args = realloc(args, (argc + 1) * sizeof(char *));
 
         if (args == NULL) {
@@ -37,7 +38,7 @@ char *join_url(char *comp, ...)
 
         /* be sure to have a slash as the last char */
         if (comp[strlen(comp) - 1] != '/') {
-            /* no need to free the old comp space because this are arguments anyways */
+			/* +1 for '\0' and +1 for '/' */
             temp = malloc((strlen(comp) + 2) * sizeof(char));
             strcpy(temp, comp);
             comp = strncat(temp, "/", 1);
