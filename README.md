@@ -1,6 +1,16 @@
 # libidroplink ![travis status](https://travis-ci.org/idrop-link/libidroplink.svg?branch=master)
 C implementation of our API
 
+## Requirements
+We rely on `automake` and `libcurl`, which can be installed on Ubuntu with the following
+command:
+```
+sudo apt-get install libcurl4-openssl-dev autoreconf
+```
+
+You don't have to do anything if you are on OS X. (You might have to get Xcode and
+the developer tools prior to building though.)
+
 ## Installation
 ```
 ./configure
