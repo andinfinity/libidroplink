@@ -8,11 +8,11 @@
 
 struct error err;
 char *token,
-        *user_id,
-        *base,
-        *TEST_USER,
-        *TEST_PASS,
-        *NEW_USER_NAME;
+     *user_id,
+     *base,
+     *TEST_USER,
+     *TEST_PASS,
+     *NEW_USER_NAME;
 struct user *usr;
 
 
@@ -31,6 +31,9 @@ void test_teardown() {
 }
 
 MU_TEST(url_joining) {
+    int i;
+    char *error_message;
+
     /* test cases */
     char *actual[] = {
             join_url(base, "/user/", NULL),
@@ -58,8 +61,9 @@ MU_TEST(url_joining) {
             join_url(base, "user/", "/thisisafakeid", NULL),
             join_url(base, "/user", "/thisisafakeid", NULL),
 
-            /* note that we won't test this more thoroughly like the case with three components
-             * above as this would take *a lot* of test cases to do it exhaustive */
+            /* note that we won't test this more thoroughly like the case with three
+             * components above as this would take *a lot* of test cases to do it
+             * exhaustive */
             join_url(base, "/user", "thisisafakeid", "someaction", NULL)
     };
 
@@ -92,17 +96,15 @@ MU_TEST(url_joining) {
             "http://localhost:7667/api/v1/user/thisisafakeid/someaction/"
     };
 
-    int i;
-    char *error_message;
-
     /* should we replace this with an actual assert? */
-    mu_assert(sizeof(actual) == sizeof(expected), "Both arrays with actual and expected strings must match in "
-            "length");
+    mu_assert(sizeof(actual) == sizeof(expected),
+            "Both arrays with actual and expected strings must match in length");
 
     for (i = 0; i < sizeof(actual) / sizeof(char *); ++i) {
         /* compare actual and expected strings */
-        asprintf(&error_message, "Should have concatenated the user url for test string %d correctly. Result is %s, "
-                "but expected %s.", i, actual[i], expected[i]);
+        asprintf(&error_message,
+                "Should have concatenated the user url for test string %d correctly."
+                " Result is %s, but expected %s.", i, actual[i], expected[i]);
         mu_assert(strcmp(actual[i], expected[i]) == 0, error_message);
         free(error_message);
 
@@ -131,7 +133,7 @@ MU_TEST(fetch_id_for_mail) {
     char *_id;
 
     mu_assert(get_id_for_email(NULL, NULL, NULL, &err) == NULL,
-              "Should have returned NULL");
+            "Should have returned NULL");
 
     _id = get_id_for_email(base, TEST_USER, TEST_PASS, &err);
 
@@ -142,7 +144,7 @@ MU_TEST(fetch_id_for_mail) {
      */
     if (_id != NULL && user_id != NULL)
         mu_assert(strcmp(_id, user_id) == 0,
-                  "Should have returned same id as returned while creating user");
+                "Should have returned same id as returned while creating user");
 
     if (_id != NULL)
         free(_id);
@@ -150,7 +152,7 @@ MU_TEST(fetch_id_for_mail) {
 
 MU_TEST(get_token) {
     mu_assert(get_auth_token_for_id(NULL, NULL, NULL, NULL, &err) == NULL,
-              "Should have returned NULL");
+            "Should have returned NULL");
 
     token = get_auth_token_for_id(base, user_id, TEST_USER, TEST_PASS, &err);
 
@@ -167,11 +169,11 @@ MU_TEST(fetch_user) {
 
     if (usr != NULL && usr->_id != NULL && user_id != NULL)
         mu_assert(strcmp(usr->_id, user_id) == 0,
-                  "Should have the same id as requested");
+                "Should have the same id as requested");
 
     if (usr != NULL && usr->email != NULL && TEST_USER != NULL)
         mu_assert(strcmp(usr->email, TEST_USER) == 0,
-                  "Should have the same mail as it was created with");
+                "Should have the same mail as it was created with");
 }
 
 MU_TEST(change_user) {
