@@ -22,18 +22,18 @@
  * `description` further describes the issue if possible.
  */
 struct error {
-    /* internal error versioning to avoid errors on changing attributes over time */
-    int version;
-    /* description as provided by the remote API or alternatively a rough problem description */
-    char* description;
-    /* http status code if available, otherwise defaults to 0 if failed */
-    long http_code;
+        /* internal error versioning to avoid errors on changing attributes over time */
+        int version;
+        /* description as provided by the remote API or alternatively a rough problem description */
+        char *description;
+        /* http status code if available, otherwise defaults to 0 if failed */
+        long http_code;
 };
 
 struct user {
-    char *_id;
-    char *email;
-    char *creation_date;
+        char *_id;
+        char *email;
+        char *creation_date;
 };
 
 /**
@@ -54,11 +54,10 @@ unsigned int get_library_version(void);
  */
 int idl_is_compatible(void);
 
-
 /**
  * -- API
  */
-int check_api_vs(char* base, struct error *err);
+int check_api_vs(char *base, struct error *err);
 
 /**
  * --- Auth
@@ -75,7 +74,8 @@ int check_api_vs(char* base, struct error *err);
  *
  * @return auth token
  */
-char *get_auth_token(char *api_endpoint, char *email, char *passwd, struct error *err);
+char *get_auth_token(char *api_endpoint, char *email, char *passwd,
+                     struct error *err);
 
 /**
  * Retrieves an authorization token for the given credentials.
@@ -89,8 +89,8 @@ char *get_auth_token(char *api_endpoint, char *email, char *passwd, struct error
  *
  * @return auth token
  */
-char *get_auth_token_for_id(char *api_endpoint, char *user_id, char *email, char *passwd,
-        struct error *err);
+char *get_auth_token_for_id(char *api_endpoint, char *user_id, char *email,
+                            char *passwd, struct error *err);
 
 /**
  * Revokes the previously issued auth token
@@ -104,7 +104,8 @@ char *get_auth_token_for_id(char *api_endpoint, char *user_id, char *email, char
  * @return If successfull, 1 gets returned. If not, something unexpected happened. See
  * err for details.
  */
-int deauthenticate(char *api_endpoint, char *user_id, char *token, struct error *err);
+int deauthenticate(char *api_endpoint, char *user_id, char *token,
+                   struct error *err);
 
 /**
  * User
@@ -121,7 +122,8 @@ int deauthenticate(char *api_endpoint, char *user_id, char *token, struct error 
  *
  * @return user id
  */
-char *get_id_for_email(char *api_endpoint, char *email, char *password, struct error *err);
+char *get_id_for_email(char *api_endpoint, char *email, char *password,
+                       struct error *err);
 
 /**
  * Creates a user
@@ -134,7 +136,8 @@ char *get_id_for_email(char *api_endpoint, char *email, char *password, struct e
  *
  * @returns the users id (NULL if unsuccessful)
  */
-char *create_user(char *api_endpoint, char *email, char *passwd, struct error *err);
+char *create_user(char *api_endpoint, char *email, char *passwd,
+                  struct error *err);
 
 /**
  * Get information about the user
@@ -147,7 +150,8 @@ char *create_user(char *api_endpoint, char *email, char *passwd, struct error *e
  *
  * @returns user information
  */
-struct user *get_user(char *api_endpoint, char *user_id, char *token, struct error *err);
+struct user *get_user(char *api_endpoint, char *user_id, char *token,
+                      struct error *err);
 
 /**
  * Deletes a user entry.
@@ -161,6 +165,7 @@ struct user *get_user(char *api_endpoint, char *user_id, char *token, struct err
  * @return If successfull, 1 gets returned. If not, something unexpected happened. See
  * err for details.
  */
-int delete_user(char *api_endpoint, char *user_id, char *token, struct error *err);
+int delete_user(char *api_endpoint, char *user_id, char *token,
+                struct error *err);
 
 #endif

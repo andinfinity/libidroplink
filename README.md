@@ -37,6 +37,18 @@ Unit tests are available for development environments:
 ./configure && make test
 ```
 
+The code style we use is basically the linux kernel indent style as described
+[here](https://www.kernel.org/doc/Documentation/CodingStyle). Please use GNU indent prior
+to commiting by running:
+```
+indent src/idroplink/libidroplink.h src/libidroplink.c src/vendor/cJSON.c src/vendor/cJSON.h
+```
+The settings are given by `.indent.pro`.
+
+Note: for the OS X users you have to install `GNU indent` via brew and use this version
+instead (which won't be linked, so you'll probably find it in `/usr/local/bin/gindent`).
+`BSD indent` does not suffice.
+
 ## API Implementation Progress
 ### API v1
 * `API`

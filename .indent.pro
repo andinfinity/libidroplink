@@ -1,0 +1,7 @@
+-linux
+--blank-lines-after-declarations
+--blank-lines-after-procedures
+--line-length80
+--dont-format-comments
+--dont-format-first-column-comments
+--no-tabs
