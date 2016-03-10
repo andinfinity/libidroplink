@@ -14,7 +14,7 @@ struct curl_string {
         size_t len;
 };
 
-void init_curl_string(struct curl_string *s)
+void _init_curl_string(struct curl_string *s)
 {
         s->len = 0;
         s->p = malloc(s->len + 1);
@@ -87,7 +87,7 @@ int check_api_vs(char *base, struct error *err)
 
                 struct curl_string s;
 
-                init_curl_string(&s);
+                _init_curl_string(&s);
 
                 /* User agent header */
                 user_agent_header = malloc(sizeof(char *) * (26 + 1));
@@ -193,7 +193,7 @@ char *get_auth_token_for_id(char *api_endpoint, char *user_id, char *email,
 
                 struct curl_string s;
 
-                init_curl_string(&s);
+                _init_curl_string(&s);
 
                 post_fields =
                     malloc((strlen(email) + strlen(passwd) + 16 +
@@ -296,7 +296,7 @@ int deauthenticate(char *api_endpoint, char *user_id, char *token,
 
                 struct curl_slist *header_chunk = NULL;
 
-                init_curl_string(&s);
+                _init_curl_string(&s);
 
                 /* Authorization header */
                 auth_header = malloc((strlen(token) + 16 + 1) * sizeof(char));
@@ -402,7 +402,7 @@ char *get_id_for_email(char *api_endpoint, char *email, char *password,
 
                 struct curl_slist *header_chunk = NULL;
 
-                init_curl_string(&s);
+                _init_curl_string(&s);
 
                 /* User agent header */
                 user_agent_header = malloc(sizeof(char *) * (26 + 1));
@@ -504,7 +504,7 @@ char *create_user(char *api_endpoint, char *email, char *passwd,
 
                 struct curl_slist *header_chunk = NULL;
 
-                init_curl_string(&s);
+                _init_curl_string(&s);
 
                 /* User agent header */
                 user_agent_header = malloc(sizeof(char *) * (26 + 1));
@@ -614,7 +614,7 @@ struct user *get_user(char *api_endpoint, char *user_id, char *token,
 
                 struct curl_slist *header_chunk = NULL;
 
-                init_curl_string(&s);
+                _init_curl_string(&s);
 
                 /* Authorization header */
                 auth_header = malloc((strlen(token) + 16 + 1) * sizeof(char));
@@ -742,7 +742,7 @@ int delete_user(char *api_endpoint, char *user_id, char *token,
 
                 struct curl_slist *header_chunk = NULL;
 
-                init_curl_string(&s);
+                _init_curl_string(&s);
 
                 /* Authorization header */
                 auth_header = malloc((strlen(token) + 16 + 1) * sizeof(char));
