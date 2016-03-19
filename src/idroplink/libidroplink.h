@@ -36,6 +36,14 @@ struct user {
         char *creation_date;
 };
 
+struct drop {
+        char *_id;
+        int views;
+        char *creation_date;
+        char *original_file_name;
+        char *url;
+};
+
 /**
  * --- META
  */
@@ -166,6 +174,22 @@ struct user *get_user(char *api_endpoint, char *user_id, char *token,
  * err for details.
  */
 int delete_user(char *api_endpoint, char *user_id, char *token,
+                struct error *err);
+
+
+/**
+ * Creates a drop to which a file can be uploaded subsequently.
+ *
+ * @param api_endpoint the URL to the API endpoint (full, for example `http://a.b/api/v1`).
+ * @param id the users id as returned by `get_id_for_email`.
+ * @param token access token that allows the client to request the resource
+ * @param err an allocated error struct that is being filled up if the function returns
+ * NULL due to a failure
+ *
+ * @return If successfull, a `drop` struct gets retured which contains the `_id` of the
+ * drop needed for the url to upload to and a `url` at which the user can view the drop
+ * once it was uploaded. */
+struct drop *initialize_drop(char *api_endpoint, char *user_id, char *token,
                 struct error *err);
 
 #endif
