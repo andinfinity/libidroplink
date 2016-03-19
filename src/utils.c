@@ -27,19 +27,17 @@ char *join_url(char *comp, ...)
 		/* remove slash at the beginning if any */
 		if (comp[0] == '/') {
 			strsize = strlen(comp) - 1;
-			/* move pointer of char to next character */
 			comp++;
 		}
 
 		/* be sure to have a slash as the last char */
 		if (comp[strlen(comp) - 1] != '/') {
-			/* +1 for '\0' and +1 for '/' */
-			temp = malloc((strlen(comp) + 2) * sizeof(char));
-			strcpy(temp, comp);
+			temp = malloc((strlen(comp)) * sizeof(char));
+			strncpy(temp, comp, strlen(comp) + 1);
 			comp = strncat(temp, "/", 1);
 		}
 
-		args[argc] = malloc(strlen(comp) * sizeof(char *));
+		args[argc] = malloc((strlen(comp) + 1) * sizeof(char));
 
 		if (args[argc] == NULL) {
 			fprintf(stderr, "Ran out of memory.\n");
@@ -47,11 +45,7 @@ char *join_url(char *comp, ...)
 
 		strcpy(args[argc], comp);
 
-		assert(strlen(args[argc]) == strlen(comp));
-		assert(strcmp(args[argc], comp) == 0);
-
-		/* -1 because strcpy appends \0 for each substring */
-		size += strlen(comp) - 1;
+		size += strlen(comp);
 		comp = va_arg(argp, char *);
 		argc++;
 	}
